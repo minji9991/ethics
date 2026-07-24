@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#153a34" />
+  <title>환경 윤리 탐구실</title>
+  <style>
+    :root {
+      --ink:#18312d; --muted:#63756f; --paper:#f7f4ec; --card:#fffdf8;
+      --line:#d9ded8; --human:#e35f48; --animal:#e89a24; --life:#4f9f64; --eco:#327b82;
+      --good:#2f8f62; --bad:#c94f4f; --shadow:0 14px 36px rgba(35,63,56,.12);
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:Pretendard,"Noto Sans KR",system-ui,sans-serif;color:var(--ink);background:
+      radial-gradient(circle at 15% 0%,#e6f2e7 0,transparent 32%),
+      radial-gradient(circle at 90% 8%,#e8f1f1 0,transparent 30%),var(--paper);}
+    button,input{font:inherit} button{cursor:pointer}
+    .hidden{display:none!important}.screen{min-height:100vh}.wrap{width:min(1180px,92vw);margin:auto}
+    .tag{display:inline-flex;gap:.45rem;align-items:center;padding:.42rem .75rem;border:1px solid #b8c9c2;border-radius:999px;background:#ffffffa8;font-size:.82rem;font-weight:800;letter-spacing:.08em}
+    .topbar{position:sticky;top:0;z-index:30;background:#f7f4eceb;backdrop-filter:blur(14px);border-bottom:1px solid #dfe3dc}
+    .topbar .wrap{height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{font-weight:950;font-size:1.12rem;display:flex;align-items:center;gap:.65rem}.brand-mark{font-size:1.55rem}
+    .student-chip{display:flex;gap:8px;align-items:center;font-size:.88rem;color:var(--muted)}
+    .ghost{border:1px solid #bdc9c3;background:#fff;border-radius:12px;padding:.68rem .9rem;color:var(--ink);font-weight:800}
+    .primary{border:0;background:var(--ink);color:#fff;border-radius:14px;padding:.82rem 1.05rem;font-weight:900;box-shadow:0 7px 17px #18312d26}
+    .primary:disabled{opacity:.45;cursor:not-allowed}.danger{background:#9b3e3e}.small{padding:.55rem .72rem;border-radius:10px;font-size:.85rem}
+
+    #loginScreen{display:grid;place-items:center;padding:28px;background:linear-gradient(135deg,#173d37,#285f55 55%,#204c50)}
+    .login-card{width:min(900px,94vw);display:grid;grid-template-columns:1.1fr .9fr;background:var(--card);border-radius:28px;overflow:hidden;box-shadow:0 28px 70px #08241d66}
+    .login-visual{padding:54px;background:linear-gradient(145deg,#e8f4e7,#dceeee);position:relative;min-height:540px}
+    .login-visual h1{font-size:clamp(2.5rem,5vw,4.7rem);line-height:1.02;margin:18px 0 20px;letter-spacing:-.06em}
+    .login-visual p{font-size:1.05rem;line-height:1.8;color:#47625b;max-width:500px}
+    .orbit{position:absolute;inset:auto 42px 34px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .orbit div{aspect-ratio:1;border-radius:22px;display:grid;place-items:center;font-size:2.3rem;background:#ffffffbd;border:1px solid #ffffff;box-shadow:0 10px 22px #315f5522}
+    .login-form{padding:54px 44px;display:flex;flex-direction:column;justify-content:center}
+    .login-form h2{font-size:1.65rem;margin:0 0 8px}.login-form>p{color:var(--muted);margin:0 0 28px;line-height:1.6}
+    label{font-weight:850;font-size:.92rem;margin:13px 0 7px;display:block}
+    input{width:100%;border:1.5px solid #cbd5cf;background:#fff;border-radius:13px;padding:.88rem 1rem;outline:none}
+    input:focus{border-color:#4d8477;box-shadow:0 0 0 4px #4d847719}
+    .login-form .primary{margin-top:20px;width:100%;padding:1rem}.login-note{font-size:.78rem;color:#7c8b86;margin-top:15px;line-height:1.6}
+
+    .hero{padding:74px 0 54px}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:50px}
+    .hero h1{font-size:clamp(2.6rem,6vw,5.4rem);line-height:.98;letter-spacing:-.07em;margin:18px 0 22px}.hero h1 em{font-style:normal;color:#2b7669}
+    .hero p{font-size:1.1rem;line-height:1.8;color:#587069;max-width:650px}.hero-actions{display:flex;gap:10px;margin-top:28px}
+    .hero-art{background:#173d37;border-radius:32px;min-height:420px;display:grid;place-items:center;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+    .earth{width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8fc5a2 0 20%,#4c9b78 21% 34%,#78b3c0 35% 100%);box-shadow:inset -28px -24px 50px #16483e55,0 0 0 20px #ffffff12;display:grid;place-items:center;font-size:4.4rem;animation:float 3.5s ease-in-out infinite}
+    .float-card{position:absolute;background:#fffffff0;border:1px solid #fff;border-radius:17px;padding:12px 16px;font-weight:900;box-shadow:0 10px 25px #09271f44}.fc1{top:44px;left:35px}.fc2{top:72px;right:28px}.fc3{bottom:58px;left:48px}.fc4{bottom:36px;right:42px}@keyframes float{50%{transform:translateY(-10px)}}
+
+    .path{padding-bottom:22px}.path-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.path a{text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;display:flex;align-items:center;gap:12px;font-weight:900}.path b{font-size:.78rem;color:#6e7c77}
+    section{padding:82px 0}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:30px}.section-head h2{font-size:clamp(2rem,4vw,3.5rem);letter-spacing:-.055em;margin:10px 0}.section-head p{color:var(--muted);line-height:1.7;max-width:610px;margin:0}.section-no{font-size:.78rem;font-weight:950;letter-spacing:.14em;color:#39796d}
+
+    .stance-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stance-tab{border:1px solid var(--line);background:#fff;border-radius:18px;padding:17px 10px;font-weight:900;color:#4d625c;transition:.2s}.stance-tab .icon{display:block;font-size:2rem;margin-bottom:7px;filter:grayscale(1);opacity:.55}.stance-tab.active{color:#fff;transform:translateY(-3px);box-shadow:var(--shadow)}.stance-tab.active .icon{filter:none;opacity:1}.stance-tab[data-id="human"].active{background:var(--human)}.stance-tab[data-id="animal"].active{background:var(--animal)}.stance-tab[data-id="life"].active{background:var(--life)}.stance-tab[data-id="eco"].active{background:var(--eco)}
+    .concept-panel{display:grid;grid-template-columns:.9fr 1.1fr;background:var(--card);border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:var(--shadow)}
+    .concept-visual{min-height:410px;display:grid;place-items:center;padding:30px;position:relative}.concept-visual svg{width:min(100%,380px);height:auto}.concept-copy{padding:42px;display:flex;flex-direction:column;justify-content:center}.concept-copy .mini{font-weight:950;letter-spacing:.12em;font-size:.78rem}.concept-copy h3{font-size:2.15rem;margin:9px 0 12px}.concept-copy p{font-size:1.03rem;line-height:1.78;color:#536a63}.keybox{border-left:5px solid;padding:15px 18px;border-radius:5px 14px 14px 5px;background:#f3f4ef;margin:10px 0 18px;font-weight:900;line-height:1.6}.thinker{display:flex;align-items:center;gap:13px;border-top:1px dashed #ccd4cf;padding-top:18px}.portrait{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#e7ece8;font-size:1.65rem}.thinker small{display:block;color:var(--muted);margin-top:4px}
+
+    #check{background:#edf2ed}.quiz-layout{display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start}.question-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:30px;box-shadow:var(--shadow);min-height:380px}.q-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.progress{font-weight:950}.hint-btn{border:1px solid #d7be6c;background:#fff9df;border-radius:12px;padding:.65rem .8rem;font-weight:900}.question-card h3{font-size:1.38rem;line-height:1.65;margin:28px 0}.blank{display:inline-flex;min-width:150px;min-height:42px;vertical-align:middle;border:2px dashed #7b9189;border-radius:10px;background:#f6f8f5;align-items:center;justify-content:center;padding:5px 11px;margin:0 5px;color:#6b7c76}.blank.filled{border-style:solid;background:#e6f2e9;color:#215b42;font-weight:950}.blank.wrong{background:#fbe6e6;border-color:#cc6868}.word-bank{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;padding-top:22px;border-top:1px solid #e0e5e0}.word{border:1px solid #b9c8c1;background:#fff;border-radius:999px;padding:.73rem 1rem;font-weight:900;box-shadow:0 5px 12px #35564d13;user-select:none}.word.dragging{opacity:.35}.q-feedback{min-height:48px;margin-top:18px;font-weight:850;line-height:1.55}.q-actions{display:flex;justify-content:space-between;margin-top:20px}.side-score{background:#173d37;color:#fff;border-radius:23px;padding:25px;position:sticky;top:90px}.side-score .big{font-size:3rem;font-weight:950;margin:5px 0}.side-score p{color:#c6d8d2;line-height:1.6}.dots{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:18px}.dot{height:9px;border-radius:99px;background:#ffffff2a}.dot.done{background:#8bd0a7}.dot.fail{background:#ef8a7d}
+
+    .game-shell{background:#102c32;border-radius:28px;overflow:hidden;box-shadow:0 24px 50px #163c3a33}.game-toolbar{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;color:#fff;background:#173942}.game-stats{display:flex;gap:20px;font-weight:900}.game-area{height:620px;position:relative;overflow:hidden;background:linear-gradient(#79b9d0 0%,#cce4df 67%,#91b378 68%,#55774f 100%)}
+    .cloud{position:absolute;color:#ffffffb8;font-size:5rem;animation:cloud 18s linear infinite}.cloud.c2{top:95px;animation-duration:25s;animation-delay:-8s;font-size:4rem}@keyframes cloud{from{left:-140px}to{left:110%}}
+    .falling{position:absolute;top:-100px;width:210px;min-height:76px;padding:13px 15px;background:#fff;border:3px solid #173d37;border-radius:20px;box-shadow:0 10px 0 #173d37;font-weight:850;line-height:1.35;display:flex;align-items:center;justify-content:center;text-align:center;touch-action:none;cursor:grab;z-index:8}.falling::after{content:"";position:absolute;bottom:-14px;left:42px;border:8px solid transparent;border-top-color:#173d37}.falling.dragging{cursor:grabbing;transform:scale(1.05);z-index:20}
+    .characters{position:absolute;left:15px;right:15px;bottom:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;z-index:5}.character{height:145px;background:#ffffffde;border:3px solid #173d37;border-radius:20px;display:grid;grid-template-rows:auto 1fr;place-items:center;padding:9px;transition:.18s}.character.over{transform:translateY(-10px);box-shadow:0 0 0 5px #fff}.character.correct{background:#dff4e6}.character.wrong{background:#f8dede;animation:shake .35s}.char-bubble{font-size:.72rem;font-weight:950;border:2px dashed #78908a;border-radius:11px;padding:6px 8px;width:100%;text-align:center;color:#62766f}.char-face{font-size:2.55rem}.char-name{font-size:.8rem;font-weight:950;text-align:center}.char-name small{display:block;color:#5d716b;font-size:.67rem;margin-top:3px}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+    .game-overlay{position:absolute;inset:0;background:#0a242bd9;z-index:25;display:grid;place-items:center;text-align:center;color:#fff;padding:30px}.game-overlay h3{font-size:2rem;margin:0 0 12px}.game-overlay p{color:#c8dadd;line-height:1.7;max-width:560px}
+
+    #result{background:#e8efe9}.result-card{background:#fff;border-radius:28px;padding:40px;box-shadow:var(--shadow);display:grid;grid-template-columns:300px 1fr;gap:38px;align-items:center}.score-ring{width:240px;height:240px;border-radius:50%;margin:auto;display:grid;place-items:center;background:conic-gradient(#367d69 var(--pct,0%),#e1e7e2 0);position:relative}.score-ring:before{content:"";position:absolute;inset:20px;background:#fff;border-radius:50%}.score-ring strong{position:relative;font-size:3.6rem}.result-copy h3{font-size:2rem;margin:0 0 12px}.result-copy p{color:var(--muted);line-height:1.7}.score-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}.score-breakdown div{background:#f1f5f1;border-radius:15px;padding:16px}.score-breakdown b{display:block;font-size:1.5rem;margin-top:6px}
+
+    .teacher-modal{position:fixed;inset:0;background:#112b27d9;z-index:100;display:grid;place-items:center;padding:20px}.teacher-box{width:min(1050px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:24px;padding:28px;box-shadow:0 30px 90px #0005}.teacher-head{display:flex;justify-content:space-between;align-items:center}.teacher-login{max-width:440px;margin:45px auto}.dashboard-tools{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.dashboard-tools input{width:220px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:15px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:13px 14px;text-align:left;border-bottom:1px solid #e4e8e4;font-size:.9rem}th{background:#eff3ef;position:sticky;top:0}.empty{text-align:center;color:#788882;padding:40px}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,25px);background:#18312d;color:#fff;padding:12px 18px;border-radius:13px;z-index:150;opacity:0;pointer-events:none;transition:.2s;box-shadow:0 10px 28px #0003}.toast.show{opacity:1;transform:translate(-50%,0)}
+    footer{padding:38px 0;color:#71817b;text-align:center;font-size:.85rem}
+    @media(max-width:850px){.login-card,.hero-grid,.concept-panel,.result-card{grid-template-columns:1fr}.login-visual{min-height:380px}.orbit{position:static;margin-top:28px}.stance-tabs,.path-grid{grid-template-columns:repeat(2,1fr)}.quiz-layout{grid-template-columns:1fr}.side-score{position:static}.game-area{height:680px}.characters{grid-template-columns:repeat(2,1fr)}.character{height:130px}.falling{width:175px}.result-card{text-align:center}}
+    @media(max-width:520px){.login-form,.login-visual{padding:34px 25px}.hero{padding-top:46px}.section-head{display:block}.stance-tabs{grid-template-columns:1fr 1fr}.concept-copy{padding:28px}.game-area{height:720px}.character{height:128px}.char-face{font-size:2rem}.score-breakdown{grid-template-columns:1fr}.topbar .student-chip span{display:none}}
+  </style>
+</head>
+<body>
+  <div id="loginScreen" class="screen">
+    <div class="login-card">
+      <div class="login-visual">
+        <span class="tag">MORAL STUDIES · ENVIRONMENTAL ETHICS</span>
+        <h1>누구의<br>목소리를<br>들을까?</h1>
+        <p>인간, 동물, 모든 생명, 그리고 생태계 전체를 바라보는 네 가지 환경 윤리의 관점을 탐구합니다.</p>
+        <div class="orbit"><div>🧑</div><div>🐾</div><div>🌱</div><div>🌍</div></div>
+      </div>
+      <div class="login-form">
+        <h2>환경 윤리 탐구실 입장</h2>
+        <p>수업에서 사용할 닉네임과 선생님이 알려 준 학급 코드를 입력하세요.</p>
+        <label for="nickname">학생 닉네임</label><input id="nickname" maxlength="12" placeholder="예: 초록생각" autocomplete="off" />
+        <label for="classCode">학급 코드</label><input id="classCode" maxlength="20" placeholder="예: ethics101" autocomplete="off" />
+        <button id="enterBtn" class="primary">학습 시작하기 →</button>
+        <button id="teacherOpenLogin" class="ghost" style="margin-top:10px">교사 점수 확인</button>
+        <p class="login-note">※ 서버 설정 전에는 기록이 현재 브라우저에 저장됩니다. Firebase를 연결하면 여러 기기의 기록을 함께 확인할 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <main id="app" class="hidden">
+    <header class="topbar"><div class="wrap"><div class="brand"><span class="brand-mark">🌿</span> 환경 윤리 탐구실</div><div class="student-chip"><span id="studentInfo"></span><button id="teacherOpen" class="ghost small">교사</button><button id="logoutBtn" class="ghost small">나가기</button></div></div></header>
+    <div class="hero"><div class="wrap hero-grid"><div><span class="tag">환경 윤리 · 개념부터 적용까지</span><h1>자연을 보는<br><em>네 개의 렌즈</em></h1><p>무엇을 도덕적으로 고려해야 할까요? 인간의 이익, 동물의 고통, 생명 그 자체, 생태계의 조화라는 서로 다른 기준을 비교하고 실제 상황에 적용해 봅니다.</p><div class="hero-actions"><button class="primary" onclick="document.querySelector('#learn').scrollIntoView()">탐구 시작</button><button class="ghost" onclick="document.querySelector('#game').scrollIntoView()">게임 바로가기</button></div></div><div class="hero-art"><div class="float-card fc1">인간의 이익</div><div class="float-card fc2">동물의 고통</div><div class="float-card fc3">생명의 가치</div><div class="float-card fc4">생태계의 조화</div><div class="earth">🌎</div></div></div></div>
+    <nav class="path"><div class="wrap path-grid"><a href="#learn"><b>01</b> 개념 학습</a><a href="#check"><b>02</b> 개념 확인</a><a href="#game"><b>03</b> 적용 게임</a><a href="#result"><b>04</b> 점수 확인</a></div></nav>
+
+    <section id="learn"><div class="wrap"><div class="section-head"><div><div class="section-no">SECTION 01 · CONCEPT</div><h2>네 가지 입장을 비교해요.</h2></div><p>버튼을 눌러 각 입장의 도덕적 고려 대상, 핵심 판단 기준, 대표 사상가를 살펴보세요.</p></div><div class="stance-tabs" id="stanceTabs"></div><div class="concept-panel"><div class="concept-visual" id="conceptVisual"></div><div class="concept-copy"><div class="mini" id="conceptMini"></div><h3 id="conceptTitle"></h3><p id="conceptDesc"></p><div class="keybox" id="conceptKey"></div><div class="thinker"><div class="portrait" id="thinkerIcon"></div><div><strong id="thinkerName"></strong><small id="thinkerNote"></small></div></div></div></div></div></section>
+
+    <section id="check"><div class="wrap"><div class="section-head"><div><div class="section-no">SECTION 02 · CHECK</div><h2>빈칸에 개념을 채워요.</h2></div><p>아래 보기의 단어를 드래그하거나 클릭해서 빈칸에 넣으세요. 막힐 때는 전구 힌트를 사용할 수 있습니다.</p></div><div class="quiz-layout"><div class="question-card"><div class="q-top"><span class="progress" id="quizProgress"></span><button class="hint-btn" id="hintBtn">💡 힌트</button></div><h3 id="questionText"></h3><div class="word-bank" id="wordBank"></div><div class="q-feedback" id="quizFeedback"></div><div class="q-actions"><button id="resetQ" class="ghost">다시 선택</button><button id="nextQ" class="primary">정답 확인</button></div></div><aside class="side-score"><div>개념 확인 점수</div><div class="big"><span id="quizScore">0</span>점</div><p>각 문항은 10점입니다. 힌트를 사용해도 감점은 없으니 개념을 이해하는 데 활용하세요.</p><div class="dots" id="quizDots"></div></aside></div></div></section>
+
+    <section id="game"><div class="wrap"><div class="section-head"><div><div class="section-no">SECTION 03 · APPLICATION GAME</div><h2>떨어지는 주장을 잡아라!</h2></div><p>하늘에서 떨어지는 주장을 바닥에 닿기 전에 알맞은 사상가의 말풍선으로 끌어다 놓으세요. 오답은 5점 감점됩니다.</p></div><div class="game-shell"><div class="game-toolbar"><strong>☁️ ETHICS DROP</strong><div class="game-stats"><span>점수 <b id="gameScore">0</b></span><span>남은 주장 <b id="gameLeft">12</b></span></div></div><div class="game-area" id="gameArea"><div class="cloud">☁</div><div class="cloud c2">☁</div><div class="characters" id="characters"></div><div class="game-overlay" id="gameOverlay"><div><h3>환경 윤리 매칭 게임</h3><p>말풍선을 마우스 또는 손가락으로 끌어 사상가에게 전달하세요. 바닥에 떨어지거나 틀린 사상가에게 주면 감점됩니다.</p><button id="startGame" class="primary">게임 시작</button></div></div></div></div></div></section>
+
+    <section id="result"><div class="wrap"><div class="section-head"><div><div class="section-no">SECTION 04 · RESULT</div><h2>나의 탐구 결과</h2></div><p>개념 확인과 적용 게임의 결과를 합산합니다. 최종 저장 버튼을 눌러 선생님에게 제출하세요.</p></div><div class="result-card"><div class="score-ring" id="scoreRing"><strong><span id="totalScore">0</span></strong></div><div class="result-copy"><h3 id="resultMessage">아직 탐구가 진행 중이에요.</h3><p id="resultDesc">개념 확인과 적용 게임을 완료하면 총점이 계산됩니다.</p><div class="score-breakdown"><div>개념 확인<b><span id="resultQuiz">0</span> / 100</b></div><div>적용 게임<b><span id="resultGame">0</span> / 100</b></div><div>최종 점수<b><span id="resultTotal">0</span> / 100</b></div></div><button id="submitScore" class="primary">최종 점수 제출</button> <button id="restartAll" class="ghost">처음부터 다시</button><div id="submitStatus" style="margin-top:14px;color:#537067;font-weight:800"></div></div></div></div></section>
+    <footer><div class="wrap">환경 윤리 탐구실 · 인간중심주의 · 동물중심주의 · 생명중심주의 · 생태중심주의</div></footer>
+  </main>
+
+  <div class="teacher-modal hidden" id="teacherModal"><div class="teacher-box"><div class="teacher-head"><h2>교사 점수 확인</h2><button id="teacherClose" class="ghost small">닫기 ✕</button></div><div id="teacherLogin" class="teacher-login"><label>교사 코드</label><input id="teacherCode" type="password" placeholder="교사 코드를 입력하세요"/><button id="teacherLoginBtn" class="primary" style="width:100%;margin-top:12px">확인</button><p style="color:#74847e;font-size:.82rem;line-height:1.6">※ GitHub Pages 단독 사용 시 프런트엔드 코드는 공개되므로 이 코드는 보안 인증 수단이 아닙니다.</p></div><div id="teacherDashboard" class="hidden"><div class="dashboard-tools"><input id="teacherClassFilter" placeholder="학급 코드로 필터"/><button id="refreshRecords" class="primary small">새로고침</button><button id="exportCsv" class="ghost small">CSV 다운로드</button><button id="clearRecords" class="ghost small danger" style="color:#fff;border:0">표시 학급 삭제</button></div><div id="storageMode" style="font-size:.83rem;color:#687b74;margin-bottom:12px"></div><div class="table-wrap"><table><thead><tr><th>제출 시각</th><th>학급</th><th>닉네임</th><th>개념</th><th>게임</th><th>최종</th><th>힌트</th></tr></thead><tbody id="recordsBody"></tbody></table></div></div></div></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- Firebase를 사용하려면 아래 3개 스크립트 주석을 해제하고 firebaseConfig를 채우세요. -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script> -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const TEACHER_CODE = "ethicsteacher";
+    const $ = s => document.querySelector(s);
+    const state = { nickname:'', classCode:'', quizIndex:0, quizScore:0, quizDone:[], selected:null, hintCount:0, gameScore:0, gameDone:false, gameRunning:false, currentBubble:null, gameQueue:[] };
+
+    const concepts = {
+      human:{title:'인간중심주의',icon:'🧑',color:'#e35f48',mini:'HUMAN-CENTERED ETHICS',key:'자연은 인간의 생존과 행복을 위한 수단이며, 인간만이 직접적인 도덕적 지위를 가진다.',desc:'자연의 가치는 인간에게 얼마나 유용한지에 따라 판단됩니다. 자연을 보호하는 이유도 궁극적으로 현재와 미래 인간의 삶을 지키기 위해서라고 봅니다.',thinker:'데카르트',note:'동물을 이성 없는 자동 기계와 유사하게 보며 인간의 우월성을 강조',person:'🧔🏻',svg:`<svg viewBox="0 0 420 300"><rect width="420" height="300" rx="28" fill="#f8d9d2"/><circle cx="210" cy="87" r="42" fill="#f2b691"/><path d="M145 250c5-75 30-112 65-112s60 37 65 112" fill="#e35f48"/><path d="M39 255h342" stroke="#4f675f" stroke-width="8"/><path d="M70 255V155h76v100M290 255V120h62v135" fill="#fff5ec" stroke="#6b746f" stroke-width="5"/><circle cx="86" cy="137" r="21" fill="#7fb275"/><circle cx="343" cy="104" r="22" fill="#75a8b3"/><text x="210" y="285" text-anchor="middle" font-size="17" font-weight="900" fill="#713b31">인간의 필요와 이익을 중심으로</text></svg>`},
+      animal:{title:'동물중심주의',icon:'🐾',color:'#e89a24',mini:'ANIMAL-CENTERED ETHICS',key:'쾌고 감수 능력이 있는 동물은 고통과 즐거움을 느끼므로 도덕적으로 고려해야 한다.',desc:'이성을 말하거나 도구를 사용하는 능력보다 고통을 느낄 수 있는지가 중요합니다. 인간의 사소한 이익을 위해 동물에게 큰 고통을 주는 일을 비판합니다.',thinker:'피터 싱어',note:'이익 평등 고려의 원칙을 통해 종 차별을 비판',person:'👨🏼‍🏫',svg:`<svg viewBox="0 0 420 300"><rect width="420" height="300" rx="28" fill="#fae7c7"/><circle cx="110" cy="165" r="52" fill="#c58a52"/><circle cx="87" cy="122" r="20" fill="#9d643e"/><circle cx="133" cy="122" r="20" fill="#9d643e"/><circle cx="100" cy="157" r="5"/><circle cx="123" cy="157" r="5"/><path d="M105 177q10 12 20 0" fill="none" stroke="#5d3d2c" stroke-width="5"/><circle cx="275" cy="137" r="62" fill="#f5f1e3"/><path d="M230 93l-35-32 5 62M320 93l35-32-5 62" fill="#f5f1e3" stroke="#766f62" stroke-width="5"/><circle cx="254" cy="133" r="6"/><circle cx="294" cy="133" r="6"/><path d="M267 158q12 12 25 0" fill="none" stroke="#665d50" stroke-width="5"/><path d="M45 246h330" stroke="#765d43" stroke-width="8"/><text x="210" y="280" text-anchor="middle" font-size="17" font-weight="900" fill="#6b471f">고통을 느끼는 존재의 이익을 고려</text></svg>`},
+      life:{title:'생명중심주의',icon:'🌱',color:'#4f9f64',mini:'LIFE-CENTERED ETHICS',key:'모든 생명체는 자기 고유의 선을 추구하는 목적론적 삶의 중심이며 내재적 가치를 가진다.',desc:'인간이나 동물뿐 아니라 식물과 미생물까지 모든 생명은 그 자체로 존중받아야 합니다. 인간은 생명 공동체의 우월한 지배자가 아니라 하나의 구성원입니다.',thinker:'폴 테일러',note:'모든 생명체에 대한 존중과 생명 중심적 평등주의를 주장',person:'👨🏻‍🌾',svg:`<svg viewBox="0 0 420 300"><rect width="420" height="300" rx="28" fill="#dcefdc"/><path d="M210 255V88" stroke="#3c7f4d" stroke-width="12" stroke-linecap="round"/><path d="M210 145c-58-5-90-35-93-77 54-8 90 18 93 77zM210 191c59-3 91-32 96-75-55-10-92 15-96 75z" fill="#65aa68"/><circle cx="210" cy="78" r="28" fill="#f1b84c"/><g fill="#f7d878"><circle cx="210" cy="41" r="22"/><circle cx="245" cy="58" r="22"/><circle cx="248" cy="96" r="22"/><circle cx="210" cy="116" r="22"/><circle cx="173" cy="96" r="22"/><circle cx="175" cy="58" r="22"/></g><path d="M70 255q140-70 280 0" fill="#86af72"/><text x="210" y="282" text-anchor="middle" font-size="17" font-weight="900" fill="#2f653b">모든 생명은 그 자체로 소중하다</text></svg>`},
+      eco:{title:'생태중심주의',icon:'🌍',color:'#327b82',mini:'ECO-CENTERED ETHICS',key:'개별 생명체뿐 아니라 종, 생태계, 대지 공동체 전체의 온전성·안정성·아름다움을 중시한다.',desc:'도덕적 고려의 범위를 무생물적 요소까지 포함한 생태계 전체로 확장합니다. 개체의 이익보다 생태 공동체의 균형과 지속 가능성을 우선할 수 있습니다.',thinker:'알도 레오폴드',note:'대지 윤리: 인간을 대지 공동체의 정복자가 아닌 평범한 구성원으로 봄',person:'🧑🏼‍🌾',svg:`<svg viewBox="0 0 420 300"><rect width="420" height="300" rx="28" fill="#d9edef"/><circle cx="210" cy="144" r="105" fill="#6da8b5"/><path d="M137 74c38-30 61-18 85 5 11 11 32 7 44 23 18 24-5 39-1 61 5 26 42 30 33 58-20 23-45 28-73 28-75 0-112-63-88-175z" fill="#69a66d"/><path d="M82 248h256" stroke="#46655e" stroke-width="8"/><path d="M70 247l35-63 35 63M280 247l28-78 42 78" fill="#476f57"/><circle cx="324" cy="57" r="22" fill="#f3c85c"/><text x="210" y="284" text-anchor="middle" font-size="17" font-weight="900" fill="#285d63">생태 공동체 전체의 조화와 균형</text></svg>`}
+    };
+
+    const quiz = [
+      {text:'인간중심주의는 자연을 인간의 삶과 행복을 위한 ____으로 보는 경향이 있다.',answer:'수단',words:['수단','주체','공동체','목적'],hint:'자연의 가치를 인간에게 얼마나 도움이 되는지로 판단해요.'},
+      {text:'동물중심주의가 도덕적 고려의 중요한 기준으로 삼는 능력은 ____ 능력이다.',answer:'쾌고 감수',words:['언어 사용','쾌고 감수','광합성','도구 제작'],hint:'고통과 즐거움을 느낄 수 있는지를 생각해 보세요.'},
+      {text:'싱어는 인간 종에 속한다는 이유만으로 인간의 이익을 우선하는 태도를 ____이라고 비판했다.',answer:'종 차별주의',words:['문화 상대주의','종 차별주의','공리주의','생명 평등주의'],hint:'인종이나 성별처럼 종을 근거로 차별하는 태도예요.'},
+      {text:'생명중심주의는 모든 생명체가 자기 고유의 선을 추구하는 ____ 삶의 중심이라고 본다.',answer:'목적론적',words:['기계론적','목적론적','이기적','도구적'],hint:'각 생명체가 자신의 방식으로 살아가고 성장한다는 의미예요.'},
+      {text:'테일러는 모든 생명체가 인간의 평가와 무관하게 ____ 가치를 가진다고 본다.',answer:'내재적',words:['교환','도구적','내재적','경제적'],hint:'다른 목적을 위한 수단이 아니라 그 자체로 지니는 가치예요.'},
+      {text:'생태중심주의는 개별 생명체를 넘어 종과 생태계 전체의 ____을 중시한다.',answer:'온전성',words:['수익성','온전성','편리성','희소성'],hint:'레오폴드가 안정성, 아름다움과 함께 강조한 말이에요.'},
+      {text:'레오폴드는 인간을 대지 공동체의 정복자가 아니라 평범한 ____으로 보았다.',answer:'구성원',words:['소유자','관리자','구성원','창조자'],hint:'공동체 안에서 다른 존재와 함께 살아가는 위치예요.'},
+      {text:'도덕적 고려의 범위가 인간 → 동물 → 모든 생명 → 생태계 전체로 갈수록 일반적으로 그 범위는 더 ____.',answer:'넓어진다',words:['좁아진다','넓어진다','사라진다','불분명해진다'],hint:'포함되는 존재가 점점 많아지는지 생각해 보세요.'},
+      {text:'동물 실험으로 얻는 인간의 작은 이익보다 동물이 겪는 큰 고통을 더 중요하게 따지는 입장은 ____이다.',answer:'동물중심주의',words:['인간중심주의','동물중심주의','생명중심주의','생태중심주의'],hint:'고통을 느끼는 존재의 이익을 평등하게 고려해요.'},
+      {text:'외래종 개체를 제거해서 토착 생태계 전체의 균형을 지키려는 판단과 가장 가까운 입장은 ____이다.',answer:'생태중심주의',words:['인간중심주의','동물중심주의','생명중심주의','생태중심주의'],hint:'개체보다 생태 공동체 전체의 안정성을 우선하는 경우예요.'}
+    ];
+
+    const gameItems = [
+      ['자연을 보호해야 미래 세대 인간도 풍요롭게 살 수 있어.','human'],['동물은 이성이 없으므로 인간의 목적을 위해 이용될 수 있어.','human'],['환경 정책은 인간의 건강과 경제적 이익을 먼저 고려해야 해.','human'],
+      ['고통을 느끼는 동물의 이익도 인간의 이익처럼 고려해야 해.','animal'],['공장식 축산이 주는 고통은 인간의 사소한 입맛보다 중요해.','animal'],['종이 다르다는 이유로 고통을 무시하는 것은 차별이야.','animal'],
+      ['나무와 풀도 각자의 방식으로 살아가려는 고유한 선이 있어.','life'],['모든 생명체는 인간에게 쓸모가 없어도 그 자체로 존중받아야 해.','life'],['인간은 다른 생명보다 본질적으로 우월하지 않아.','life'],
+      ['옳은 행동은 생태계의 온전성과 안정성을 지키는 행동이야.','eco'],['강과 흙, 숲도 대지 공동체의 일부로 도덕적 고려 대상이야.','eco'],['개별 동물보다 생태계 전체의 균형을 우선할 수도 있어.','eco']
+    ];
+
+    let db = null;
+    const firebaseReady = typeof firebase !== 'undefined' && firebaseConfig.apiKey !== 'YOUR_API_KEY';
+    if(firebaseReady){ try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); }catch(e){ console.warn(e); } }
+
+    function toast(msg){ const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200); }
+    function saveSession(){localStorage.setItem('ethicsStudent',JSON.stringify({nickname:state.nickname,classCode:state.classCode}));}
+    function enter(){const n=$('#nickname').value.trim(),c=$('#classCode').value.trim();if(!n||!c)return toast('닉네임과 학급 코드를 모두 입력해 주세요.');state.nickname=n;state.classCode=c;saveSession();$('#studentInfo').textContent=`${n} · ${c}`;$('#loginScreen').classList.add('hidden');$('#app').classList.remove('hidden');window.scrollTo(0,0);}
+    $('#enterBtn').onclick=enter; ['nickname','classCode'].forEach(id=>$('#'+id).addEventListener('keydown',e=>{if(e.key==='Enter')enter()}));
+    $('#logoutBtn').onclick=()=>{localStorage.removeItem('ethicsStudent');location.reload()};
+
+    function renderTabs(){const box=$('#stanceTabs');box.innerHTML='';Object.entries(concepts).forEach(([id,c],i)=>{const b=document.createElement('button');b.className='stance-tab'+(i===0?' active':'');b.dataset.id=id;b.innerHTML=`<span class="icon">${c.icon}</span>${c.title}`;b.onclick=()=>showConcept(id);box.appendChild(b)});showConcept('human')}
+    function showConcept(id){const c=concepts[id];document.querySelectorAll('.stance-tab').forEach(x=>x.classList.toggle('active',x.dataset.id===id));$('#conceptVisual').innerHTML=c.svg;$('#conceptVisual').style.background=c.color+'22';$('#conceptMini').textContent=c.mini;$('#conceptMini').style.color=c.color;$('#conceptTitle').textContent=c.title;$('#conceptDesc').textContent=c.desc;$('#conceptKey').textContent=c.key;$('#conceptKey').style.borderColor=c.color;$('#thinkerIcon').textContent=c.person;$('#thinkerName').textContent=c.thinker;$('#thinkerNote').textContent=c.note;}
+
+    function renderQuiz(){const q=quiz[state.quizIndex];$('#quizProgress').textContent=`문제 ${state.quizIndex+1} / ${quiz.length}`;$('#questionText').innerHTML=q.text.replace('____','<span class="blank" id="answerBlank">여기에 놓기</span>');$('#wordBank').innerHTML='';[...q.words].sort(()=>Math.random()-.5).forEach(w=>{const el=document.createElement('button');el.className='word';el.textContent=w;el.draggable=true;el.ondragstart=e=>{e.dataTransfer.setData('text/plain',w);el.classList.add('dragging')};el.ondragend=()=>el.classList.remove('dragging');el.onclick=()=>selectWord(w);$('#wordBank').appendChild(el)});const blank=$('#answerBlank');blank.ondragover=e=>e.preventDefault();blank.ondrop=e=>{e.preventDefault();selectWord(e.dataTransfer.getData('text/plain'))};state.selected=null;$('#quizFeedback').textContent='';$('#nextQ').textContent='정답 확인';$('#nextQ').disabled=false;updateDots();}
+    function selectWord(w){state.selected=w;const b=$('#answerBlank');b.textContent=w;b.className='blank filled';document.querySelectorAll('.word').forEach(x=>x.style.opacity=x.textContent===w?'.45':'1')}
+    $('#hintBtn').onclick=()=>{state.hintCount++;$('#quizFeedback').textContent='💡 '+quiz[state.quizIndex].hint;$('#quizFeedback').style.color='#8a6a12'};
+    $('#resetQ').onclick=()=>renderQuiz();
+    $('#nextQ').onclick=()=>{const q=quiz[state.quizIndex];if(!state.selected)return toast('보기를 빈칸에 넣어 주세요.');if(!state.quizDone[state.quizIndex]){const ok=state.selected===q.answer;state.quizDone[state.quizIndex]=ok?'correct':'wrong';if(ok){state.quizScore+=10;$('#quizFeedback').textContent='정답입니다! 핵심 개념을 정확히 연결했어요.';$('#quizFeedback').style.color='#2f8f62'}else{$('#answerBlank').classList.add('wrong');$('#quizFeedback').textContent=`아쉬워요. 정답은 ‘${q.answer}’입니다.`;$('#quizFeedback').style.color='#b54747'}$('#quizScore').textContent=state.quizScore;$('#nextQ').textContent=state.quizIndex===quiz.length-1?'결과 보기':'다음 문제';updateDots();updateResult();return;} if(state.quizIndex<quiz.length-1){state.quizIndex++;renderQuiz()}else{document.querySelector('#game').scrollIntoView();toast('개념 확인 완료! 이제 적용 게임에 도전하세요.')}};
+    function updateDots(){const d=$('#quizDots');d.innerHTML='';quiz.forEach((_,i)=>{const x=document.createElement('span');x.className='dot '+(state.quizDone[i]==='correct'?'done':state.quizDone[i]==='wrong'?'fail':'');d.appendChild(x)})}
+
+    const thinkers={human:['데카르트','🧔🏻','인간중심주의'],animal:['싱어','👨🏼‍🏫','동물중심주의'],life:['테일러','👨🏻‍🌾','생명중심주의'],eco:['레오폴드','🧑🏼‍🌾','생태중심주의']};
+    function renderCharacters(){const box=$('#characters');box.innerHTML='';Object.entries(thinkers).forEach(([id,a])=>{const c=document.createElement('div');c.className='character';c.dataset.id=id;c.innerHTML=`<div class="char-bubble">여기에 주장을 놓으세요</div><div><div class="char-face">${a[1]}</div><div class="char-name">${a[0]}<small>${a[2]}</small></div></div>`;box.appendChild(c)})}
+    $('#startGame').onclick=startGame;
+    function startGame(){state.gameScore=0;state.gameDone=false;state.gameRunning=true;state.gameQueue=[...gameItems].sort(()=>Math.random()-.5);$('#gameScore').textContent=0;$('#gameLeft').textContent=state.gameQueue.length;$('#gameOverlay').classList.add('hidden');spawnBubble();updateResult()}
+    function spawnBubble(){if(!state.gameRunning)return;if(!state.gameQueue.length){finishGame();return}const [text,type]=state.gameQueue.shift();$('#gameLeft').textContent=state.gameQueue.length+1;const area=$('#gameArea'),el=document.createElement('div');el.className='falling';el.textContent=text;el.dataset.type=type;el.style.left=Math.max(8,Math.random()*(area.clientWidth-225))+'px';area.appendChild(el);state.currentBubble=el;let y=-100,last=performance.now(),speed=32+Math.random()*15,drag=false;
+      const move=(ev)=>{if(!drag)return;const p=ev.touches?ev.touches[0]:ev,r=area.getBoundingClientRect();el.style.left=Math.max(0,Math.min(area.clientWidth-el.offsetWidth,p.clientX-r.left-el.offsetWidth/2))+'px';el.style.top=Math.max(0,Math.min(area.clientHeight-el.offsetHeight,p.clientY-r.top-el.offsetHeight/2))+'px';document.querySelectorAll('.character').forEach(c=>{const cr=c.getBoundingClientRect();c.classList.toggle('over',p.clientX>=cr.left&&p.clientX<=cr.right&&p.clientY>=cr.top&&p.clientY<=cr.bottom)})};
+      const down=(ev)=>{drag=true;el.classList.add('dragging');el.setPointerCapture?.(ev.pointerId)};const up=(ev)=>{if(!drag)return;drag=false;el.classList.remove('dragging');document.querySelectorAll('.character').forEach(c=>{const cr=c.getBoundingClientRect(),er=el.getBoundingClientRect();const hit=er.left<cr.right&&er.right>cr.left&&er.top<cr.bottom&&er.bottom>cr.top;c.classList.remove('over');if(hit)matchBubble(c,el)})};
+      el.addEventListener('pointerdown',down);window.addEventListener('pointermove',move);window.addEventListener('pointerup',up,{once:false});
+      function frame(now){if(!el.isConnected)return;const dt=(now-last)/1000;last=now;if(!drag){y+=speed*dt;el.style.top=y+'px'}if(y>area.clientHeight-180){state.gameScore=Math.max(0,state.gameScore-5);$('#gameScore').textContent=state.gameScore;el.remove();toast('바닥에 떨어졌어요. -5점');setTimeout(spawnBubble,350);updateResult();return}requestAnimationFrame(frame)}requestAnimationFrame(frame)
+    }
+    function matchBubble(c,el){if(!el.isConnected)return;const ok=c.dataset.id===el.dataset.type;c.classList.add(ok?'correct':'wrong');setTimeout(()=>c.classList.remove('correct','wrong'),500);if(ok){state.gameScore+=Math.ceil(100/gameItems.length);toast('정확한 관점입니다!')}else{state.gameScore=Math.max(0,state.gameScore-5);toast('다른 입장이에요. -5점')}$('#gameScore').textContent=Math.min(100,state.gameScore);el.remove();setTimeout(spawnBubble,450);updateResult()}
+    function finishGame(){state.gameRunning=false;state.gameDone=true;state.gameScore=Math.min(100,state.gameScore);$('#gameLeft').textContent=0;$('#gameOverlay').classList.remove('hidden');$('#gameOverlay').innerHTML=`<div><h3>게임 완료!</h3><p>적용 게임 점수는 <strong>${state.gameScore}점</strong>입니다. 아래 결과 페이지에서 최종 점수를 제출하세요.</p><button class="primary" onclick="document.querySelector('#result').scrollIntoView()">결과 확인</button> <button class="ghost" onclick="location.reload()">다시 도전</button></div>`;updateResult()}
+
+    function updateResult(){const total=Math.round((state.quizScore+state.gameScore)/2);$('#resultQuiz').textContent=state.quizScore;$('#resultGame').textContent=state.gameScore;$('#resultTotal').textContent=total;$('#totalScore').textContent=total;$('#scoreRing').style.setProperty('--pct',total+'%');let m='탐구를 계속해 보세요.';if(total>=90)m='환경 윤리 관점 분석가!';else if(total>=75)m='네 가지 관점을 잘 구분해요!';else if(total>=60)m='핵심 개념이 자라고 있어요!';$('#resultMessage').textContent=m;$('#resultDesc').textContent=state.gameDone?'네 관점의 차이를 실제 주장에 적용한 결과입니다. 제출하면 선생님 점수표에 기록됩니다.':'개념 확인과 적용 게임을 모두 완료하면 더 정확한 결과를 볼 수 있습니다.';}
+    async function submitRecord(){if(state.quizDone.length<quiz.length||!state.gameDone)return toast('개념 확인과 적용 게임을 먼저 완료해 주세요.');const record={nickname:state.nickname,classCode:state.classCode,quizScore:state.quizScore,gameScore:state.gameScore,totalScore:Math.round((state.quizScore+state.gameScore)/2),hintCount:state.hintCount,submittedAt:new Date().toISOString()};try{if(db){await db.collection('environmentEthicsScores').add(record)}else{const arr=JSON.parse(localStorage.getItem('environmentEthicsScores')||'[]');arr.push({...record,id:crypto.randomUUID?.()||Date.now().toString()});localStorage.setItem('environmentEthicsScores',JSON.stringify(arr))}$('#submitStatus').textContent='✓ 제출되었습니다. 선생님 점수표에 기록했어요.';toast('점수 제출 완료!')}catch(e){console.error(e);toast('제출 중 오류가 발생했습니다.')}}
+    $('#submitScore').onclick=submitRecord;$('#restartAll').onclick=()=>{if(confirm('현재 점수를 지우고 처음부터 다시 시작할까요?'))location.reload()};
+
+    function openTeacher(){ $('#teacherModal').classList.remove('hidden');$('#teacherCode').value='';$('#teacherLogin').classList.remove('hidden');$('#teacherDashboard').classList.add('hidden'); }
+    $('#teacherOpen').onclick=openTeacher;$('#teacherOpenLogin').onclick=openTeacher;$('#teacherClose').onclick=()=>$('#teacherModal').classList.add('hidden');
+    $('#teacherLoginBtn').onclick=()=>{if($('#teacherCode').value!==TEACHER_CODE)return toast('교사 코드가 올바르지 않습니다.');$('#teacherLogin').classList.add('hidden');$('#teacherDashboard').classList.remove('hidden');loadRecords()};
+    $('#refreshRecords').onclick=loadRecords;$('#teacherClassFilter').oninput=loadRecords;
+    async function getRecords(){if(db){const snap=await db.collection('environmentEthicsScores').orderBy('submittedAt','desc').get();return snap.docs.map(d=>({id:d.id,...d.data()}))}return JSON.parse(localStorage.getItem('environmentEthicsScores')||'[]').sort((a,b)=>b.submittedAt.localeCompare(a.submittedAt));}
+    async function loadRecords(){const filter=$('#teacherClassFilter').value.trim().toLowerCase();let rows=await getRecords();if(filter)rows=rows.filter(r=>r.classCode.toLowerCase().includes(filter));const body=$('#recordsBody');body.innerHTML='';$('#storageMode').textContent=db?'현재 Firebase Firestore의 공유 기록을 표시합니다.':'현재 이 브라우저의 로컬 기록만 표시합니다.';if(!rows.length){body.innerHTML='<tr><td colspan="7" class="empty">제출 기록이 없습니다.</td></tr>';return}rows.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${new Date(r.submittedAt).toLocaleString('ko-KR')}</td><td>${escapeHtml(r.classCode)}</td><td>${escapeHtml(r.nickname)}</td><td>${r.quizScore}</td><td>${r.gameScore}</td><td><strong>${r.totalScore}</strong></td><td>${r.hintCount||0}</td>`;body.appendChild(tr)})}
+    function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+    $('#exportCsv').onclick=async()=>{const f=$('#teacherClassFilter').value.trim().toLowerCase();let rows=await getRecords();if(f)rows=rows.filter(r=>r.classCode.toLowerCase().includes(f));const csv=['제출시각,학급코드,닉네임,개념점수,게임점수,최종점수,힌트사용',...rows.map(r=>[r.submittedAt,r.classCode,r.nickname,r.quizScore,r.gameScore,r.totalScore,r.hintCount||0].map(v=>'"'+String(v).replaceAll('"','""')+'"').join(','))].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='환경윤리_점수.csv';a.click();URL.revokeObjectURL(a.href)};
+    $('#clearRecords').onclick=async()=>{const f=$('#teacherClassFilter').value.trim();if(!f)return toast('삭제할 학급 코드를 먼저 입력해 주세요.');if(!confirm(`‘${f}’ 학급의 기록을 삭제할까요?`))return;if(db){const snap=await db.collection('environmentEthicsScores').where('classCode','==',f).get();const batch=db.batch();snap.forEach(d=>batch.delete(d.ref));await batch.commit()}else{const rows=JSON.parse(localStorage.getItem('environmentEthicsScores')||'[]').filter(r=>r.classCode!==f);localStorage.setItem('environmentEthicsScores',JSON.stringify(rows))}loadRecords();toast('해당 학급 기록을 삭제했습니다.')};
+
+    renderTabs();renderQuiz();renderCharacters();updateResult();
+    const saved=JSON.parse(localStorage.getItem('ethicsStudent')||'null');if(saved){$('#nickname').value=saved.nickname||'';$('#classCode').value=saved.classCode||'';}
+  </script>
+</body>
+</html>
